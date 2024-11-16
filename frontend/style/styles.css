@@ -1,0 +1,45 @@
+.base {
+	display: flex;
+	flex-direction: row;
+	width: 100vw;
+	height: 100vh;
+}
+.left {
+	display: flex;
+	flex-direction: column;
+	width: 15%;
+}
+.right {
+	display: flex;
+	flex-direction: column;
+	width: 85%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.single {
+	height:100%;
+	width:100%;
+	position:absolute;
+	border:solid 1px #666666;
+}
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+	.h-custom {
+	height: 100%;
+	}
+}
+.modal-footer--sticky {
+  position: sticky;
+  bottom: 0;
+  background-color: inherit;
+  z-index: 1055;
+}

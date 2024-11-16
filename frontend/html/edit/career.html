@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="UTF-8">
+      <title>Prototype</title>
+      <link rel="stylesheet" href="../../style/styles.css" />
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.css">
+      <link href="https://cdn.datatables.net/v/dt/dt-2.1.8/datatables.min.css" rel="stylesheet">
+      <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+  </head>
+  <body class="d-flex flex-column vh-100">
+    <div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-danger">
+      <div class="text-white mb-3 mb-md-0">
+        <h1>経歴編集</h1>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center h-100">
+      <section>
+        <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+          <div id="toast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="d-flex">
+                  <div class="toast-body">
+                  保存完了！
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+          </div>
+        </div>
+        <form id="form" class="p-3 m-0 border-0 bd-example m-0 border-0">
+          <div class="form-group">
+            <div id="buttonarea" class="m-0 border-0 bd-example m-0 border-0">
+              <button type="button" class="btn btn-outline-secondary">ダウンロード</button>
+              <button type="button" class="btn btn-outline-secondary">アップロード</button>
+              <button id="btn_save" type="button" class="btn btn-primary">保存</button>
+            </div>
+            <div>
+              <table id="careerTable" class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th data-field="row" style="width:4em">＃</th>
+                    <th data-field="term">期間</th>
+                    <th data-field="gyoshu">業種</th>
+                    <th data-field="project_desc">プロジェクト概要</th>
+                    <th data-field="operate">操作　<button id="btnAddRow" type="button" class="badge bg-success">+</span></th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+    <div class="modal fade" id="modal_editCareer" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modalTitle">経歴編集</h4>
+            <div id="buttonarea" class="p-2 m-0 border-0 bd-example m-0 border-0" style="float:right;">
+              <button type="button" id="btn_cancelEdit" class="btn btn-outline-secondary">キャンセル</button>
+              <button type="button" id="btn_updateRow" class="btn btn-primary">OK</button>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div data-mdb-input-init class="form-outline mb-4">
+              <form id="form" class="p-3 m-0 border-0 bd-example m-0 border-0">
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <div class="mb-3" style="width: 200px;">
+                      <h4>期間</h4>
+                      <div class="mb-3">
+                          <span group="input-group">
+                            <h5>From</h5>
+                            <input id="frm_term_start" class="datepicker form-control" style="display:inline">
+                            <h5>To</h5>
+                            <input id="frm_term_end" class="datepicker form-control" style="display:inline">
+                          </span>
+                          <span>
+                            <input class="form-check-input" type="checkbox" name="gyomu_end" id="gyomu_end">
+                            <label class="form-check-label" for="gyomu_end">業務終了</label>
+                          </span>
+                      </div>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <div class="input-group mb-3" style="width: 300px;">
+                      <label for="frm_gyoshu" class="form-label"><h4>業種</h4></label>
+                      <div class="input-group mb-3">
+                        <input type="text" id="frm_gyoshu" class="form-control" aria-label="業種">
+                      </div>
+                    </div>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <h4>概要</h4>
+                    <div class="mb-3">
+                      <h6>プロジェクト概要</h6>
+                      <div class="input-group mb-3">
+                        <textarea class="form-control" id="frm_project_desc"></textarea>
+                      </div>
+                    </div>
+                    <div class="input-group mb-3">
+                      <h6>システム概要</h6>
+                      <div class="input-group mb-3">
+                        <textarea class="form-control" id="system_detail"></textarea>
+                      </div>
+                    </div>
+                    <div class="input-group mb-3">
+                      <h6>作業概要</h6>
+                      <div class="input-group mb-3">
+                        <textarea class="form-control" id="work_detail"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <h4>開発環境</h4>
+                    <h5>※複数ある場合はカンマ区切りで入力してください。</h5>
+                    <div class="mb-3" style="width: 500px;">
+                      <label for="recipient-name" class="col-form-label">サーバ</label>
+                      <textarea class="form-control" id="env_srv"></textarea>
+                    </div>
+                    <div class="mb-3" style="width: 500px;">
+                      <label for="message-text" class="col-form-label">OS</label>
+                      <textarea class="form-control" id="env_os"></textarea>
+                    </div>
+                    <div class="mb-3" style="width: 500px;">
+                      <label for="recipient-name" class="col-form-label">DB</label>
+                      <textarea class="form-control" id="env_db"></textarea>
+                    </div>
+                    <div class="mb-3" style="width: 500px;">
+                      <label for="message-text" class="col-form-label">言語</label>
+                      <textarea class="form-control" id="env_lang"></textarea>
+                    </div>
+                    <div class="mb-3" style="width: 500px;">
+                      <label for="message-text" class="col-form-label">フレームワーク</label>
+                      <textarea class="form-control" id="env_fw"></textarea>
+                    </div>
+                    <div class="mb-3" style="width: 500px;">
+                      <label for="message-text" class="col-form-label">ミドルウェア</label>
+                      <textarea class="form-control" id="env_mw"></textarea>
+                    </div>
+                    <div class="mb-3" style="width: 500px;">
+                      <label for="message-text" class="col-form-label">ツール</label>
+                      <textarea class="form-control" id="env_tool"></textarea>
+                    </div>
+                    <div class="mb-3" style="width: 500px;">
+                      <label for="message-text" class="col-form-label">パッケージ</label>
+                      <textarea class="form-control" id="env_pkg"></textarea>
+                    </div>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <h4>開発規模</h4>
+                    <h6>設計(本数)</h6>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" style="width: 100px;">基本設計</span>
+                      <input type="text" id="amount_rd" class="form-control" aria-label="基本設計">
+                      <span class="input-group-text" style="width: 100px;">詳細設計</span>
+                      <input type="text" id="amount_dd" class="form-control" aria-label="詳細設計">
+                    </div>
+                    <h6>製造(本数)</h6>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" style="width: 75px;">画面</span>
+                      <input type="text" id="amount_pg_scr" class="form-control" aria-label="画面">
+                      <span class="input-group-text" style="width: 75px;">バッチ</span>
+                      <input type="text" id="amount_pg_bat" class="form-control" aria-label="バッチ">
+                      <span class="input-group-text" style="width: 75px;">帳票</span>
+                      <input type="text" id="amount_pg_frm" class="form-control" aria-label="帳票">
+                      <input type="text" id="name_pg_etc1" class="input-group-text" placeholder="その他1" aria-label="その他1" style="width: 100px;">
+                      <input type="text" id="amount_pg_etc1" class="form-control" placeholder="その他1本数" aria-label="その他1本数" disabled>
+                      <input type="text" id="name_pg_etc2" class="input-group-text" placeholder="その他2" aria-label="その他2" style="width: 100px;">
+                      <input type="text" id="amount_pg_etc2" class="form-control" placeholder="その他2本数" aria-label="その他2本数" disabled>
+                    </div>
+                    <h6>総ステップ数</h6>
+                    <div class="input-group mb-3" style="width: 150px;">
+                      <input type="text" id="last_name_romaji" class="form-control" placeholder="総ステップ数" aria-label="総ステップ数">
+                    </div>
+                    <h6>テスト(ケース数)</h6>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" style="width: 75px;">単体</span>
+                      <input type="text" id="amount_ut" class="form-control" aria-label="単体">
+                      <span class="input-group-text" style="width: 75px;">結合</span>
+                      <input type="text" id="amount_it" class="form-control" aria-label="結合">
+                      <span class="input-group-text" style="width: 75px;">総合</span>
+                      <input type="text" id="amount_st" class="form-control" aria-label="総合">
+                    </div>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <h4>職位</h4>
+                    <div class="input-group mb-3" style="width: 200px;">
+                      <select class="form-select" name="position">
+                        <option value="TE" selected>テスター</option>
+                        <option value="PR">プログラマ</option>
+                        <option value="SE">システムエンジニア</option>
+                        <option value="TL">チームリーダー</option>
+                        <option value="PL">プロジェクトリーダー</option>
+                        <option value="PM">プロジェクトマネージャ</option>
+                        <option value="ETC">その他</option>
+                      </select>
+                    </div>
+                    <div class="input-group mb-3" style="width: 300px;">
+                      <span class="input-group-text">その他</span>
+                      <input type="text" id="position_etc" class="form-control" aria-label="その他" disabled>
+                    </div>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <h4>開発メンバ数</h4>
+                    <div class="input-group mb-3" style="width: 300px;">
+                      <span class="input-group-text">自社メンバ</span>
+                      <input type="text" id="last_name_romaji" class="form-control" placeholder="自社" aria-label="自社">
+                      <span class="input-group-text">総数</span>
+                      <input type="text" id="first_name_romaji" class="form-control" placeholder="総数" aria-label="総数">
+                    </div>
+                    <div class="mb-3" style="width: 300px;">
+                      <input class="form-check-input" type="checkbox" value="1" id="jisha_leader">
+                      <label class="form-check-label" for="jisha_leader">自社リーダー</label>
+                    </div>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <h4>作業内容</h4>
+                    <div class="mb-3">
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="sp" id="sagyo_naiyo_sp">
+                        <label class="form-check-label" for="sagyo_naiyo_sp">企画</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="rd" id="sagyo_naiyo_rd">
+                        <label class="form-check-label" for="sagyo_naiyo_rd">要件定義</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="ad" id="sagyo_naiyo_ad">
+                        <label class="form-check-label" for="sagyo_naiyo_ad">方式設計</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="bd" id="sagyo_naiyo_bd">
+                        <label class="form-check-label" for="sagyo_naiyo_bd">基本設計</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="dd" id="sagyo_naiyo_dd">
+                        <label class="form-check-label" for="sagyo_naiyo_dd">詳細設計</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="pd" id="sagyo_naiyo_pd">
+                        <label class="form-check-label" for="sagyo_naiyo_pd">プログラム設計</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="pg" id="sagyo_naiyo_pg">
+                        <label class="form-check-label" for="sagyo_naiyo_pg">製造</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="ut" id="sagyo_naiyo_ut">
+                        <label class="form-check-label" for="sagyo_naiyo_ut">単体テスト</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="it" id="sagyo_naiyo_it">
+                        <label class="form-check-label" for="sagyo_naiyo_it">結合テスト</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="st" id="sagyo_naiyo_st">
+                        <label class="form-check-label" for="sagyo_naiyo_st">システムテスト</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="ot/uat" id="sagyo_naiyo_ot_uat">
+                        <label class="form-check-label" for="sagyo_naiyo_ot_uat">運用テスト/受入テスト</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="mg" id="sagyo_naiyo_mg">
+                        <label class="form-check-label" for="sagyo_naiyo_mg">システム移行</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="op/ma" id="sagyo_naiyo_op_ma">
+                        <label class="form-check-label" for="sagyo_naiyo_op_ma">運用・保守</label>
+                      </span>
+                      <span>　</span>
+                      <span>
+                        <input class="form-check-input" type="checkbox" name="sagyo_naiyo" value="su" id="sagyo_naiyo_su">
+                        <label class="form-check-label" for="sagyo_naiyo_su">サポート</label>
+                      </span>
+                    </div>
+                    <div class="input-group" style="width: 300px;">
+                      <span class="input-group-text">その他</span>
+                      <input type="text" id="last_name_romaji" class="form-control" aria-label="その他">
+                    </div>
+                  </div>
+                </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/v/dt/dt-2.1.8/datatables.min.js"></script>
+    <script src="../../script/common.js"></script>
+    <script src="../../script/career_tblcntrl.js"></script>
+    <script src="../../script/career_frmcntrl.js"></script>
+    <footer class="footer d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-danger">
+      <!-- Copyright -->
+      <div class="container text-white mb-3 mb-md-0"></div>
+      <!-- Copyright -->
+    </footer>
+  </body>
+</html>

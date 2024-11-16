@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Prototype</title>
+    <link rel="stylesheet" href="../../style/styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="d-flex flex-column vh-100">
+    <div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-danger">
+        <div class="text-white mb-3 mb-md-0">
+        <h1>個人基本情報編集</h1>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <section>
+        <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+            <div id="toast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                    保存完了！
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <form id="form" class="p-3 m-0 border-0 bd-example m-0 border-0">
+            <div id= "buttonarea">
+                <div id="buttonarea" class="p-3 m-0 border-0 bd-example m-0 border-0">
+                    <button type="button" class="btn btn-outline-secondary">ダウンロード</button>
+                    <button type="button" class="btn btn-outline-secondary">アップロード</button>
+                    <button id="btn_save" type="button" class="btn btn-primary">保存</button>
+                </div> 
+            </div>
+            <div data-mdb-input-init class="form-outline mb-4" style="width: 500px;">
+                <label for="last_name_kanji" class="form-label"><h4>氏名(漢字)</h4></label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">氏</span>
+                    <input type="text" id="last_name_kanji" class="form-control" placeholder="氏(漢字)" aria-label="氏(漢字)">
+                    <span class="input-group-text">名</span>
+                    <input type="text" id="first_name_kanji" class="form-control" placeholder="名(漢字)" aria-label="名(漢字)">
+                </div>
+            </div>
+            <div data-mdb-input-init class="form-outline mb-4" style="width: 500px;">
+                <label for="last_name_romaji" class="form-label"><h4>氏名(ローマ字)</h4></label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">氏</span>
+                    <input type="text" id="last_name_romaji" class="form-control" placeholder="氏(ローマ字)" aria-label="氏(ローマ字)">
+                    <span class="input-group-text">名</span>
+                    <input type="text" id="first_name_romaji" class="form-control" placeholder="名(ローマ字)" aria-label="名(ローマ字)">
+                </div>
+            </div>
+            <div data-mdb-input-init class="form-outline mb-4" style="width: 500px;">
+                <h4>性別</h4>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="gender_male" value="男" checked>
+                    <label class="form-check-label" for="gender_male">
+                      男
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="gender_female" value="女">
+                    <label class="form-check-label" for="gender_female">
+                      女
+                    </label>
+                </div>
+            </div>
+            <div data-mdb-input-init class="form-outline mb-4" style="width: 500px;">
+                <label for="birthdate" class="form-label"><h4>生年月日</h4></label>
+                <div class="input-group date mb-3">
+                    <input id="birthdate" class="datepicker">
+                </div>
+            </div>
+            <div data-mdb-input-init class="form-outline mb-4" style="width: 500px;">
+                <label for="address" class="form-label"><h4>現住所(市・区まで)</h4></label>
+                <div class="input-group date mb-3">
+                    <input type="text" id="address" class="form-control" placeholder="現住所(市・区まで)" aria-label="現住所(市・区まで)">
+                </div>
+            </div>
+            <div data-mdb-input-init class="form-outline mb-4" style="width: 500px;">
+                <label for="nearest_station" class="form-label"><h4>最寄り駅</h4></label>
+                <div class="input-group date mb-3">
+                    <input type="text" id="nearest_station" class="form-control" placeholder="最寄り駅" aria-label="最寄り駅">
+                </div>
+            </div>
+            <div data-mdb-input-init class="form-outline mb-4" style="width: 500px;">
+                <label for="graduation" class="form-label"><h4>最終学歴</h4></label>
+                <div class="input-group date mb-3">
+                    <input type="text" id="graduation" class="form-control" placeholder="最終学歴" aria-label="最終学歴">
+                </div>
+            </div>
+        </form>
+        </section>
+    </div>
+    <script src="../../script/common.js"></script>
+    <script src="../../script/personal.js"></script>
+</body>
+</html>
