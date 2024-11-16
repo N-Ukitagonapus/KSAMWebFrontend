@@ -23,6 +23,15 @@ function createRequestOptions(raw){
   return requestOptions;
 }
 
+/**
+ * トーストバリデーションクラス切り替え
+ * @param targetid 対象ID
+ * @param isOk 結果 true:OK false:NG
+ */
+function changeToastClass (target,isOk) {
+  target.removeClass("text-bg-primary text-bg-danger").addClass(isOk ? "text-bg-primary" : "text-bg-danger");
+}
+
 function getDateFromForm(value) {
   return new Date(Date.parse(value))
 }
@@ -51,4 +60,55 @@ function getLastDayOfMonth (inputDate) {
   var retDate = structuredClone(inputDate);
   retDate.setMonth(retDate.getMonth() + 1, 0);
   return retDate;
+}
+
+
+/////////////// バリデーション ///////////////
+function addMessage(target, text){
+  if(target.html().length == 0){
+    target.html(text);
+  } else {
+    target.html(target.text() + "<br>" +text);
+  }
+}
+
+function setValidated(target, msgdiv){
+  target.removeClass("is-invalid").addClass("is-valid");
+  msgdiv.html("");
+}
+
+function validateRequired (target, msgdiv, msg) {
+  if (target.val().length == 0) {
+    target.removeClass("is-valid").addClass("is-invalid");
+    addMessage(msgdiv, msg);
+    return false;
+  }
+  return true;
+}
+
+function validateRequired (target, msgdiv, msg) {
+  if (target.val().length == 0) {
+    target.removeClass("is-valid").addClass("is-invalid");
+    addMessage(msgdiv, msg);
+    return false;
+  }
+  return true;
+}
+
+function validateRegex (target, msgdiv, regex, msg) {
+  if (!(target.val().match(regex))) {
+    target.removeClass("is-valid").addClass("is-invalid");
+    addMessage(msgdiv, msg);
+    return false;
+  }
+  return true;
+}
+
+function validateConfirm (target, msgdiv, confirm, msg) {
+  if (target.val() != confirm.val()) {
+    target.removeClass("is-valid").addClass("is-invalid");
+    addMessage(msgdiv, msg);
+    return false;
+  }
+  return true;
 }
