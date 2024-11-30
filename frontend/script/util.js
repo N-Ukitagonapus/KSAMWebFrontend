@@ -3,20 +3,20 @@ const apiInvokeURL="https://sgqsa573nc.execute-api.ap-northeast-1.amazonaws.com/
 const ACCESS_OK = 200
 const TOOMUCH_USAGE = 429
 $(function(){
-  //テスト用
-  // $('#shodo_sosiki').val("n-ukita");
-  // $('#shodo_project').val("api-connection");
-  // $('#shodo_token').val("c52db2ea13f6840b63e4c783e6e86b7ba1bc1b9f");
-  // $('#chatwork_token').val("8fdddafd8e7fe15069fc8a94e59d33f8");
-  //
+  テスト用
+  $('#shodo_sosiki').val("n-ukita");
+  $('#shodo_project').val("api-connection");
+  $('#shodo_token').val("c52db2ea13f6840b63e4c783e6e86b7ba1bc1b9f");
+  $('#chatwork_token').val("8fdddafd8e7fe15069fc8a94e59d33f8");
+  
   $('#shodo_check').on('click', function(){
     switchShodoCheck(true);
-    var requestOptions = createRequestOptions(JSON.stringify({
-      "method":"check_shodo",
+    param = {
       "org_name":$('#shodo_sosiki').val(),
       "project_name":$('#shodo_project').val(),
       "token": $('#shodo_token').val()
-    }));
+    };
+    var requestOptions = createRequestOptions("check_shodo", "env", param);
     fetch(apiInvokeURL, requestOptions)
     .then(response => response.text())
     .then(result => {
@@ -57,10 +57,7 @@ $(function(){
 
   $('#cw_check').on('click', function(){
     switchCWCheck(true);
-    var requestOptions = createRequestOptions(JSON.stringify({
-      "method":"check_cw",
-      "cw_token": $('#chatwork_token').val()
-    }));
+    var requestOptions = createRequestOptions("check_cw",env,{"cw_token": $('#chatwork_token').val()});
     fetch(apiInvokeURL, requestOptions)
     .then(response => response.text())
     .then(result => {

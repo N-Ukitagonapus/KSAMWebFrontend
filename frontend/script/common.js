@@ -1,17 +1,17 @@
 const apiInvokeURL="https://sgqsa573nc.execute-api.ap-northeast-1.amazonaws.com/dev";
-
+const env = "TEST"
 /**
  * リクエスト部品生成
  * @param raw JSONパラメータ
  * return リクエスト部品
  */
-function createRequestOptions(raw){
+function createRequestOptions(method, env, paramjson){
   // instantiate a headers object
   var myHeaders = new Headers();
   // add content type header to object
   myHeaders.append("Content-Type", "application/json");
   // using built in JSON utility package turn object to string and store in a variable
-  var raw = raw;
+  var raw = JSON.stringify({"method":method, "env":env, "param":paramjson});
   // create a JSON object with parameters for API call and store in a variable
   var requestOptions = {
       method: 'POST',
@@ -32,10 +32,16 @@ function changeToastClass (target,isOk) {
   target.removeClass("text-bg-primary text-bg-danger").addClass(isOk ? "text-bg-primary" : "text-bg-danger");
 }
 
+/**
+ * 日付をフォームから取得
+ */
 function getDateFromForm(value) {
   return new Date(Date.parse(value))
 }
 
+/**
+ * 日付形式を文字列に変換
+ */
 function dateToString(date){
   return date.toLocaleDateString("ja-JP", {year: "numeric",month: "2-digit", day: "2-digit"});
 }
