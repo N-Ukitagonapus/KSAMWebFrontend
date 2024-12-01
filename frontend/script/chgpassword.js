@@ -1,4 +1,5 @@
 const pwRegex = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[!-/:-@[-`{-~])[a-zA-Z\d!-/:-@[-`{-~]{8,}$/;
+const CODE_OK = 200
 
 $(function(){
   $("#toast").toast({delay: 5000, autohide: true});
@@ -19,11 +20,11 @@ $(function(){
       userId = sessionStorage.getItem('user_id');
       parameters ={"user_id":userId, "new_password":$('#new_password').val()}
       var requestOptions = createRequestOptions("chg_password", env, parameters);
-      fetch(apiInvokeURL, requestOptions)
+      fetch(lambdaInvokeURL, requestOptions)
         .then(response => response.text())
         .then(result => {
           lmdres = JSON.parse(JSON.parse(result).body)
-            if (lmdres.code == CODE_OK) {
+            if (lmdres == CODE_OK) {
               switchSpinner(false);
               showToast("パスワードを変更しました。", true);
             } else {
@@ -47,13 +48,13 @@ $(function(){
       result = false;
     }
     if(validateRequired($('#new_password'), $('#msg_new_password'), "新しいパスワードを入力してください")
-      && validateRegex($('#new_password'), $('#msg_new_password'), pwRegex, "新しいパスワードは半角英数字8文字以上で入力してください。<br>大文字、小文字、数字をそれぞれ1文字以上含めてください。")){
+      && validateRegex($('#new_password'), $('#msg_new_password'), pwRegex, "新しいパスワードは半角英数字8文字以上で入力してください。<br>大文字、小文字、数字、記号をそれぞれ1文字以上含めてください。")){
       setValidated($('#new_password'), $('#msg_new_password'));
     } else {
       result = false;
     }
     if(validateRequired($('#confirm_password'), $('#msg_confirm_password'), "新しいパスワードを入力してください")
-      && validateRegex($('#confirm_password'), $('#msg_confirm_password'), pwRegex, "新しいパスワードは半角英数字8文字以上で入力してください。<br>大文字、小文字、数字をそれぞれ1文字以上含めてください。")
+      && validateRegex($('#confirm_password'), $('#msg_confirm_password'), pwRegex, "新しいパスワードは半角英数字8文字以上で入力してください。<br>大文字、小文字、数字、記号をそれぞれ1文字以上含めてください。")
       && validateConfirm($('#confirm_password'), $('#msg_confirm_password'), $('#new_password'), "パスワードが一致しません。")){
       setValidated($('#confirm_password'), $('#msg_confirm_password'));
     } else {

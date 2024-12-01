@@ -8,7 +8,7 @@ $(function(){
         password= $("#password").val();
         parameters ={"login_id":loginid,"pass_word":password}
         var requestOptions = createRequestOptions("login", env, parameters);
-        fetch(apiInvokeURL, requestOptions)
+        fetch(lambdaInvokeURL, requestOptions)
             .then(response => response.text())
             .then(result => {
                 lmdres = JSON.parse(JSON.parse(result).body).login_result

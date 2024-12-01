@@ -20,11 +20,11 @@ $(function(){
       userId = sessionStorage.getItem('user_id');
       parameters ={"user_id":userId, "new_password":$('#new_password').val()}
       var requestOptions = createRequestOptions("chg_password", env, parameters);
-      fetch(apiInvokeURL, requestOptions)
+      fetch(lambdaInvokeURL, requestOptions)
           .then(response => response.text())
           .then(result => {
             lmdres = JSON.parse(JSON.parse(result).body)
-              if (lmdres.code == CODE_OK) {
+              if (lmdres == CODE_OK) {
                 showToast("パスワードを初期化しました。<br>3秒後にメイン画面に移動します。", true);
                 setTimeout(function(){
                   form = $("#form");

@@ -1,4 +1,5 @@
-const apiInvokeURL="https://sgqsa573nc.execute-api.ap-northeast-1.amazonaws.com/dev";
+const lambdaInvokeURL="https://sgqsa573nc.execute-api.ap-northeast-1.amazonaws.com/dev/KSAMbackend";
+const lambdaApiInvokeURL="https://sgqsa573nc.execute-api.ap-northeast-1.amazonaws.com/dev/KSAMBackendAPIConnect";
 const env = "TEST"
 /**
  * リクエスト部品生成
