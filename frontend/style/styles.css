@@ -37,9 +37,7 @@ height: calc(100% - 73px);
 	height: 100%;
 	}
 }
-.modal-footer--sticky {
-  position: sticky;
-  bottom: 0;
-  background-color: inherit;
-  z-index: 1055;
+.information {
+	height: 70%;
+	overflow: auto;
 }
